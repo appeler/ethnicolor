@@ -20,4 +20,3 @@ Includes data from 2000 and 2010 census datasets
 cs_surname(surname="Smith")
 }
 }
-

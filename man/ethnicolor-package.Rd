@@ -2,8 +2,8 @@
 % Please edit documentation in R/ethnicolor.R
 \docType{package}
 \name{ethnicolor-package}
-\alias{ethnicolor}
 \alias{ethnicolor-package}
+\alias{ethnicolor}
 \title{ethnicolor: Impute race based on names}
 \description{
 Impute race based on names using data from census, voter registration files etc.
@@ -11,4 +11,3 @@ Impute race based on names using data from census, voter registration files etc.
 \author{
 Gaurav Sood
 }
-
