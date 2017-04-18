@@ -1,13 +1,19 @@
 Package: ethnicolor
 Title: Impute Race and Ethnicity Based on Name 
-Version: 0.1
-Authors@R: person("Gaurav", "Sood", email = "gsood07@gmail.com", role = c("aut", "cre"))
+Version: 0.1.0
+Author: person("Gaurav", "Sood", email = "gsood07@gmail.com", role = c("aut", "cre"))
+Maintainer: Gaurav Sood <gsood07@gmail.com>
 Description: Impute Race and Ethnicity Based on Name Using Data
     from Census and Voter Registration Files. 
 Depends:
     R (>= 3.3.2)
 License: MIT + file LICENSE
+URL: http://github.com/soodoku/ethnicolor
+BugReports: http://github.com/soodoku/ethnicolor/issues
 Encoding: UTF-8
 LazyData: true
-Author: Gaurav Sood <gsood07@gmail.com> [aut, cre]
-RoxygenNote: 6.0.0
+RoxygenNote: 6.0.1
+Suggests:
+    testthat,
+    rmarkdown,
+    knitr (>= 1.11)
