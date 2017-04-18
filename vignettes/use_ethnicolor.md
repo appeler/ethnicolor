@@ -1,7 +1,7 @@
 ---
 title: "Using ethnicolor"
 author: "Gaurav Sood"
-date: "`r Sys.Date()`"
+date: "2017-04-18"
 vignette: >
   %\VignetteIndexEntry{Illustrating how to use ethnicolor}
   %\VignetteEngine{knitr::rmarkdown}
@@ -15,20 +15,23 @@ vignette: >
 
 The latest development version of the package will always be on GitHub. To install the package from GitHub and to load the installed package:
 
-```{r, eval=FALSE, install}
+
+```r
 #library(devtools)
 install_github("soodoku/ethnicolor")
 ```
 
 To install the package from CRAN, type in: 
 
-```{r, eval=FALSE, cran_install}
+
+```r
 install.packages("ethnicolor")
 ```
 
 Next, load the package:
 
-```{r, eval=FALSE, load_pkg}
+
+```r
 library(ethnicolor)
 ```
 
@@ -36,7 +39,8 @@ library(ethnicolor)
 
 To get category of the content from the Census last name data:
 
-```{r, eval=FALSE, base_census}
+
+```r
 cs_surname("Smith")[,1:10]
 ```
 
