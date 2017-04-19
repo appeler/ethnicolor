@@ -8,10 +8,10 @@
 
 The data are from:
 
-* [2000 Census](http://www.census.gov/topics/population/genealogy/data/2000_surnames.html)
-* [2010 Census](http://www.census.gov/topics/population/genealogy/data/2000_surnames.html)
+* [2000 Census](https://github.com/soodoku/ethnicolor/tree/master/data-raw/census)
+* [2010 Census](https://github.com/soodoku/ethnicolor/tree/master/data-raw/census)
 * Florida Voter Registration from February 2017. Email the package maintainer for data. Or request your own copy from the Florida Secretary of State. The data are available for free. 
-* [Wiki Data](https://github.com/soodoku/ethnicolor/tree/master/data-raw/wiki)
+* [Wikipedia Data](https://github.com/soodoku/ethnicolor/tree/master/data-raw/wiki)
 
 ### Included Models for Imputing Race
 
