@@ -1,13 +1,24 @@
-## ethnicolor: Race and Ethnicity based on name
+## ethnicolor: Impute Race and Ethnicity Based on Name
 
 [![Build Status](https://travis-ci.org/soodoku/ethnicolor.svg?branch=master)](https://travis-ci.org/soodoku/ethnicolor)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ethnicolor)](https://cran.r-project.org/package=ethnicolor)
 ![](http://cranlogs.r-pkg.org/badges/grand-total/ethnicolor)
 
-Original data on last names from:
+### Data
 
-* [2010 Census](http://www.census.gov/topics/population/genealogy/data/2000_surnames.html)
+The data are from:
+
 * [2000 Census](http://www.census.gov/topics/population/genealogy/data/2000_surnames.html)
+* [2010 Census](http://www.census.gov/topics/population/genealogy/data/2000_surnames.html)
+* Florida Voter Registration from February 2017. Email the package maintainer for data. Or request your own copy from the Florida Secretary of State. The data are available for free. 
+* [Wiki Data](https://github.com/soodoku/ethnicolor/tree/master/data-raw/wiki)
+
+### Included Models for Imputing Race
+
+* `census_ln` will simply append data from the 2000 and 2010 census. For some mild processing that underlies it, see [here](https://github.com/soodoku/ethnicolor/tree/master/data-raw/census).
+* `pred_census_ln` exposes a model based off Florida Voter Registration Last Name Data. For details, see [here]()
+* `pred_fl_reg_ln` exposes a model built using Florida Voter Registration data. Utilizes only the surname. For details, see [here](https://github.com/soodoku/ethnicolor/tree/master/data-raw/fl_voter_reg)
+* `pred_fl_reg_ln` exposes a model built using Florida Voter Registration data. Utilizes the first name, middle name (if there), last name, and suffix (if there). For details, see [here](https://github.com/soodoku/ethnicolor/tree/master/data-raw/fl_voter_reg)
 
 ### Installation
 

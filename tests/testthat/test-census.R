@@ -1,8 +1,8 @@
 context("Census Data")
 
-test_that("submitImage, processImage happens successfully", {
+test_that("census base appending works correctly", {
 
-  ln_census <- cs_surname(surname = "Smith")
+  census_race <- ln_census(surname = "Smith")
 
-  expect_that(ln_census, is_a("data.frame"))
+  expect_that(census_race, is_a("data.frame"))
 })
