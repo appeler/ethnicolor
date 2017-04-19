@@ -2,7 +2,7 @@
 
 # Set dir. 
 setwd(githubdir)
-setwd("ethnicolor/data-raw")
+setwd("ethnicolor/data-raw/census/")
 
 # 2000 and 2010 Census datasets
 
