@@ -8,9 +8,9 @@
 
 The data are from:
 
-* [2000 Census](https://github.com/soodoku/ethnicolor/tree/master/data-raw/census)
-* [2010 Census](https://github.com/soodoku/ethnicolor/tree/master/data-raw/census)
-* Florida Voter Registration from February 2017. Email the package maintainer for data. Or request your own copy from the Florida Secretary of State. The data are available for free. 
+* [The 2000 Census](https://github.com/soodoku/ethnicolor/tree/master/data-raw/census)
+* [The 2010 Census](https://github.com/soodoku/ethnicolor/tree/master/data-raw/census)
+* The Florida Voter Registration File from February 2017. Email the package maintainer for data. Or request your own copy from the Florida Secretary of State. The data are available for free. 
 * [Wikipedia Data](https://github.com/soodoku/ethnicolor/tree/master/data-raw/wiki)
 
 ### Included Models for Imputing Race
@@ -29,7 +29,12 @@ To get the current development version from GitHub:
 devtools::install_github("soodoku/ethnicolor")
 ```
 
+### Related Information
+
+For Python package that provides roughly the same functionality, see [ethnicolr](https://github.com/soodoku/ethnicolr).
+
 ### License
+
 Scripts are released under the [MIT License](https://opensource.org/licenses/MIT).
 
 ### Contributor Code of Conduct
