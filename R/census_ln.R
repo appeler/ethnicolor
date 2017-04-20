@@ -1,6 +1,8 @@
 #' Impute Race Based on Census Last Name Datasets
 #' 
-#' Includes data from 2000 and 2010 census datasets
+#' Appends data on percentage whites, blacks, asians, hispanics, 
+#' mixed-race, and native americans with the last name from the 
+#' 2000 and 2010 census datasets
 #'
 #' 
 #' @param surname Required; vector of strings

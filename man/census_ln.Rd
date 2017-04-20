@@ -13,7 +13,12 @@ census_ln(surname = NULL)
 Data frame with all the details that are in the census datasets
 }
 \description{
-Includes data from 2000 and 2010 census datasets
+Appends data on percentage whites, blacks, asians, hispanics, 
+mixed-race, and native americans with the last name from the 
+2000 and 2010 census datasets
+}
+\details{
+See more at: \url{https://github.com/soodoku/ethnicolor/tree/master/data-raw/census}
 }
 \examples{
 census_ln(surname = "Smith")
