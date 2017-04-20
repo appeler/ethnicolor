@@ -4,6 +4,7 @@
 #' mixed-race, and native americans with the last name from the 
 #' 2000 and 2010 census datasets
 #'
+#' See more at: \url{https://github.com/soodoku/ethnicolor/tree/master/data-raw/census}
 #' 
 #' @param surname Required; vector of strings
 #' 
