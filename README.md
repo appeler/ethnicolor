@@ -10,7 +10,7 @@ The data are from:
 
 * [The 2000 Census](https://github.com/soodoku/ethnicolor/tree/master/data-raw/census)
 * [The 2010 Census](https://github.com/soodoku/ethnicolor/tree/master/data-raw/census)
-* The Florida Voter Registration File from February 2017. Email the package maintainer for data. Or request your own copy from the Florida Secretary of State. The data are available for free. 
+* The Florida Voter Registration File from February 2017. Request access to the data [here](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/UBIG3F) or request your own copy from the Florida Secretary of State. 
 * [Wikipedia Data](https://github.com/soodoku/ethnicolor/tree/master/data-raw/wiki)
 
 ### Included Models for Imputing Race

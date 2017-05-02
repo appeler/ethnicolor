@@ -4,3 +4,4 @@
 ^lit$
 ^.travis.yml$
 ^appveyor.yml$
+.lintr
