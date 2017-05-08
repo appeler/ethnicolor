@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/soodoku/ethnicolor.svg?branch=master)](https://travis-ci.org/soodoku/ethnicolor)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/ethnicolor)](https://cran.r-project.org/package=ethnicolor)
+[![codecov](https://codecov.io/gh/soodoku/ethnicolor/branch/master/graph/badge.svg)](https://codecov.io/gh/soodoku/ethnicolor)
 ![](http://cranlogs.r-pkg.org/badges/grand-total/ethnicolor)
 
 ### Data
