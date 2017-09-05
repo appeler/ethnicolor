@@ -10,11 +10,11 @@
 #' 
 #' @return Data frame with all the details that are in the census datasets
 #' 
-#' @export
-#' 
 #' @examples 
 #' census_ln(surname = "Smith")
-#' 
+#' top5 <- census_ln(c("Smith", "Johnson", "Williams", "Brown", "Jones"))
+#' sum(top5$cs2010_count)
+#' @export
 
 census_ln <- function(surname = NULL){
 

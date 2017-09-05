@@ -22,5 +22,6 @@ See more at: \url{https://github.com/soodoku/ethnicolor/tree/master/data-raw/cen
 }
 \examples{
 census_ln(surname = "Smith")
-
+top5 <- census_ln(c("Smith", "Johnson", "Williams", "Brown", "Jones"))
+sum(top5$cs2010_count)
 }

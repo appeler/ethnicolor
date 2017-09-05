@@ -6,8 +6,10 @@
 \alias{ethnicolor}
 \title{ethnicolor: Impute race based on names}
 \description{
-Impute race based on names using data from census, voter registration files etc.
+Impute race and ethnicity based on last name or the full name using census data, voter registration data, and data from Wikipedia. The package exposes validated ML models to predict race and ethnicity.
 }
 \author{
 Gaurav Sood
+
+Pete Mohanty
 }
