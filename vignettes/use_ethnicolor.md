@@ -1,10 +1,10 @@
 ---
 title: "Using ethnicolor"
 author: "Gaurav Sood"
-date: "2017-04-18"
+date: "2017-09-05"
 vignette: >
   %\VignetteIndexEntry{Illustrating how to use ethnicolor}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{knitr::knitr}
   %\VignetteEncoding{UTF-8}
 ---
 

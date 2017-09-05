@@ -17,7 +17,7 @@ The data are from:
 ### Included Models for Imputing Race
 
 * `census_ln` will simply append data from the 2000 and 2010 census. For some mild processing that underlies it, see [here](https://github.com/soodoku/ethnicolor/tree/master/data-raw/census).
-* `pred_census_ln` exposes a model based off Florida Voter Registration Last Name Data. For details, see [here]()
+* `pred_census_ln` exposes a model based off Florida Voter Registration Last Name Data. For details, see [here](https://github.com/soodoku/ethnicolor/tree/master/data-raw/fl_voter_reg)
 * `pred_fl_reg_ln` exposes a model built using Florida Voter Registration data. Utilizes only the surname. For details, see [here](https://github.com/soodoku/ethnicolor/tree/master/data-raw/fl_voter_reg)
 * `pred_fl_reg_ln` exposes a model built using Florida Voter Registration data. Utilizes the first name, middle name (if there), last name, and suffix (if there). For details, see [here](https://github.com/soodoku/ethnicolor/tree/master/data-raw/fl_voter_reg)
 

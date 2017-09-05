@@ -4,7 +4,7 @@ author: "Gaurav Sood"
 date: "`r Sys.Date()`"
 vignette: >
   %\VignetteIndexEntry{Illustrating how to use ethnicolor}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{knitr::knitr}
   %\VignetteEncoding{UTF-8}
 ---
 
