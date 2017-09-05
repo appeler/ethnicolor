@@ -2,3 +2,4 @@
 
 S3method(print,census_ln)
 export(census_ln)
+export(pred_fl_reg_ln)

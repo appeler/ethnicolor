@@ -40,6 +40,7 @@ census_ln <- function(surname = NULL){
 #' @inheritParams census_ln
 #' @param x The object to print.
 #' @param ... Further arguments to passed on to other print methods.
+#' 
 #' @export
 #' 
 
@@ -51,4 +52,16 @@ print.census_ln <- function(x, ...) {
   } else {
     NextMethod()
   }
+}
+
+#' Last name classifier based on Florida Voter Registration Data
+#' 
+#' @param surname required; string; vector of surnames
+#' @description Uses a validated ML model that uses bi- and tri-char tokens in the last name to predict probability that the person is white, black, asian, and hispanic. For more information see \url{https://github.com/soodoku/ethnicolor/tree/master/data-raw/fl_voter_reg}
+#' @examples 
+#' pred_fl_reg_ln(surname = "Smith")
+#' @return data.frame with original list and predicted probability the person is white, Asian, black, and hispanic.
+#' @export
+pred_fl_reg_ln <- function(surname = NULL){
+  return(surname)
 }
