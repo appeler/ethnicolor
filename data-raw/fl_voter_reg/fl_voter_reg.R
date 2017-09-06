@@ -11,13 +11,18 @@ library(data.table)
 
 # Iterate over directory
 
-loadClean <- function(x, phonics = TRUE){
+loadClean <- function(x, phonics = TRUE, storeLength = TRUE){
   # phonics more compact than storing names in memory
   # if phonics = FALSE, run for loop below on 'data'
   
   function(x){
     d <- fread(x, select = c(3:6, 21))
     colnames(d) <- c("name_last", "name_suffix", "name_first", "name_middle", "race")
+    if(storeLength){
+      d$last_length <- nchar(d$name_last)
+      d$first_length <- nchar(d$name_first)
+      d$middle_length <- nchar(d$name_middle)
+    }
     if(phonics){ 
       for(i in colnames(d)[grep("name_", colnames(d))]){
         d[[i]] <- soundex(d[[i]]) 
@@ -27,7 +32,7 @@ loadClean <- function(x, phonics = TRUE){
   }
 }
 
-data  <- lapply(dir(pattern = ".txt"), clean) # may want dir(pattern = "_20170207.txt")
+data  <- lapply(dir(pattern = ".txt"), loadClean()) # may want dir(pattern = "_20170207.txt")
 
 # rbind the list
 fl_voters  <- do.call("rbind", data)
@@ -42,6 +47,16 @@ fl_voters$race <- car::recode(fl_voters$race, "1 ='native_indian'; 2 = 'asian'; 
 # hose the rows where race is unknown or other 
 fl_voters <- subset(fl_voters, !(race %in% c("other", "unknown")))
 # write out the file
+
+standardize <- function(x, NAremove = TRUE){
+  (x - mean(x, na.rm = TRUE)/(sd(x, na.rm = TRUE)))
+  if(NAremove) x[is.na(x)] = 0
+}
+
+fl_voters$last_length <- standardize(fl_voters$last_length)
+fl_voters$middle_length <- standardize(fl_voters$middle_length)
+fl_voters$first_length <- standardize(fl_voters$first_length)
+
 write.csv(fl_voters, file="fl_reg_name_race.csv", row.names=F) # 441 megabytes
 
 library(class)
@@ -53,8 +68,13 @@ pTraining <- 0.9
 train <- sample(nrow(fl_voters), size = pTraining*N, replace = FALSE)
 test <- sample(1:nrow(fl_voters)[-train], size = (N - length(train)), replace = FALSE)
 
-race_pred <- knn(cbind(as.factor(fl_voters$name_last[train]), as.factor(fl_voters$name_first[train])), 
-                 cbind(as.factor(fl_voters$name_last[test]), as.factor(fl_voters$name_first[test])), 
+
+Xtrain = cbind(as.factor(fl_voters$name_last[train]), as.factor(fl_voters$name_first[train]), 
+               fl_voters$last_length[train], fl_voters$first_length[train], fl_voters$middle_length[train])
+Xtest = cbind(as.factor(fl_voters$name_last[test]), as.factor(fl_voters$name_first[test]), 
+              fl_voters$last_length[test], fl_voters$first_length[test], fl_voters$middle_length[test])
+
+race_pred <- knn(Xtrain, Xtest, 
                  as.factor(fl_voters$race[train]), k = 20)
 
 table(fl_voters$race[test], race_pred)
