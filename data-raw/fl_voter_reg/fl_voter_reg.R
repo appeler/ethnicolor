@@ -19,9 +19,9 @@ loadClean <- function(x, phonics = TRUE, storeLength = TRUE){
     d <- fread(x, select = c(3:6, 21))
     colnames(d) <- c("name_last", "name_suffix", "name_first", "name_middle", "race")
     if(storeLength){
-      d$last_length <- nchar(d$name_last)
-      d$first_length <- nchar(d$name_first)
-      d$middle_length <- nchar(d$name_middle)
+      d[["last_length"]] <- nchar(d[["name_last"]])
+      d[["middle_length"]] <- nchar(d[["name_middle"]])
+      d[["first_length"]] <- nchar(d[["name_first"]])
     }
     if(phonics){ 
       for(i in colnames(d)[grep("name_", colnames(d))]){
@@ -33,11 +33,20 @@ loadClean <- function(x, phonics = TRUE, storeLength = TRUE){
 }
 
 data  <- lapply(dir(pattern = ".txt"), loadClean()) # may want dir(pattern = "_20170207.txt")
-
 # rbind the list
 fl_voters  <- do.call("rbind", data)
 dim(fl_voters) # 13,710,358 x 5
 remove(data)
+
+# for KNN
+standardize <- function(x, NAremove = TRUE){
+  (x - mean(x, na.rm = TRUE)/(sd(x, na.rm = TRUE)))
+  if(NAremove) x[is.na(x)] = 0
+}
+
+fl_voters$last_length <- standardize(fl_voters$last_length)
+fl_voters$middle_length <- standardize(fl_voters$middle_length)
+fl_voters$first_length <- standardize(fl_voters$first_length)
 
 # meaningful col. names (now in lapply function...)
 # names(fl_voters) <- c("name_last", "name_suffix", "name_first", "name_middle", "race")
@@ -48,14 +57,6 @@ fl_voters$race <- car::recode(fl_voters$race, "1 ='native_indian'; 2 = 'asian'; 
 fl_voters <- subset(fl_voters, !(race %in% c("other", "unknown")))
 # write out the file
 
-standardize <- function(x, NAremove = TRUE){
-  (x - mean(x, na.rm = TRUE)/(sd(x, na.rm = TRUE)))
-  if(NAremove) x[is.na(x)] = 0
-}
-
-fl_voters$last_length <- standardize(fl_voters$last_length)
-fl_voters$middle_length <- standardize(fl_voters$middle_length)
-fl_voters$first_length <- standardize(fl_voters$first_length)
 
 write.csv(fl_voters, file="fl_reg_name_race.csv", row.names=F) # 441 megabytes
 
