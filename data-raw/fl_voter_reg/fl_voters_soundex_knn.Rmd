@@ -1,0 +1,140 @@
+---
+title: "Can soundex and kNN Predict Race from Names?"
+author: "Gaurav Sood and Pete Mohanty"
+date: "9/7/2017"
+output: html_document
+---
+
+```{r setup, echo = FALSE}
+library(knitr)
+opts_knit$set(root.dir = "/Users/mohanty/Dropbox/git/ethnicolor/data-raw/fl_voter_reg/20170207_VoterDetail")
+
+```
+
+
+This document assesses whether `soundex` (from `library(phonics)`) can be used to infer race and ethnicity (as categorized by the United States Census) from the names of over 13 million registered voters in Florida using *k Nearest Neighbors*. Race and ethnicity are difficult to define and measure and we doubt that a such a simple statistical analysis could do it with total precision. However, in the social, political, and business world there are many circumstances in which discriminatory dynamics are at work but researchers and analysts lack the data to clearly identify the problem. To that end, we perform a simple experiment on data available from [Harvard's Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/UBIG3F)...
+
+Phonics is a library that encodes words with English-language metaphones. This approach reduces--but does not quite eliminate--variation stemming from minor differences in spelling.
+
+```{r, comment="", message = FALSE, warning=FALSE}
+library(phonics)
+soundex("catherine")
+soundex("Catherine")
+soundex("Cathryn")
+soundex("Kathryn")
+
+```
+
+The data consist of race (the outcome variable to be predicted), the phonic of first, middle, and last name, and the (standardized) number of characters in part of the name. For details on data cleaning, see [fl_voter_reg.R](https://github.com/soodoku/ethnicolor/blob/master/data-raw/fl_voter_reg/fl_voter_reg.R) in this repo.
+
+
+```{r, comment="", message = FALSE, warning=FALSE}
+fl_voters <- data.table::fread("fl_reg_name_race.csv") # way faster than read.csv at this size
+nrow(fl_voters)
+head(fl_voters)
+round(100*table(fl_voters$race)/nrow(fl_voters), 1)
+```
+The data are approximately two thirds non-Hispanic white, one sixth Hispanic, and one seventh Black. Other categories comprise less than 2\% of the original data and have been removed from this stage of the analysis. Despite the large number of voters, there are less than 6,500 phonic sounds in the data.
+
+
+```{r, comment="", message = FALSE, warning=FALSE, echo = FALSE}
+
+phones <- matrix(c(length(unique(fl_voters$name_last)), length(unique(fl_voters$name_middle)), length(unique(fl_voters$name_first)),
+            length(unique(c(fl_voters$name_last, fl_voters$name_middle, fl_voters$name_first)))), nrow = 1)
+rownames(phones) <- "Unique Phonics (soundex)"
+colnames(phones) <- c("Last Name", "Middle Name", "First Name", "Full Name")
+phones
+```
+
+
+# k Nearest Neighbors
+
+```{r, comment="", message = FALSE, warning=FALSE}
+library(class)
+set.seed(2017)
+N <- 10000
+pTraining <- 0.9
+train <- sample(nrow(fl_voters), size = pTraining*N, replace = FALSE)
+test <- sample(1:nrow(fl_voters)[-train], size = (N - length(train)), replace = FALSE)
+
+X <- cbind(as.factor(fl_voters$name_last), as.factor(fl_voters$name_middle), as.factor(fl_voters$name_first))
+Xtrain <- X[train,]
+Xtest <- X[test,]
+
+race_obs <- fl_voters$race[test]
+race_pred <- knn(Xtrain, Xtest, as.factor(fl_voters$race[train]), k = 5)
+
+table(race_obs, race_pred)/length(test)
+mean(race_obs == race_pred)
+
+```
+
+The model vastly overestimates the proportion of respondents who are white and has substantial difficulty distinguishing between blacks and Hispanics on the occassion that it does predict minority status. Overall, the model only gets `r round(100*mean(race_obs == race_pred), 1)`\% correct. 
+
+Increasing the sample size does not help matters much.
+
+```{r, comment="", message = FALSE, warning=FALSE}
+N <- 50000
+train <- sample(nrow(fl_voters), size = pTraining*N, replace = FALSE)
+test <- sample(1:nrow(fl_voters)[-train], size = (N - length(train)), replace = FALSE)
+
+X <- cbind(as.factor(fl_voters$name_last), as.factor(fl_voters$name_middle), as.factor(fl_voters$name_first))
+Xtrain <- X[train,]
+Xtest <- X[test,]
+
+race_obs <- fl_voters$race[test]
+race_pred <- knn(Xtrain, Xtest, as.factor(fl_voters$race[train]), k = 5)
+
+table(race_obs, race_pred)/length(test)
+mean(race_obs == race_pred)
+
+```
+Focusing in on the 900,000 or so people with common sounds in their first and last name...
+
+```{r, comment = ""}
+
+sounds <- unique(c(fl_voters$name_last, fl_voters$name_middle, fl_voters$name_first))
+top.sounds <- sounds[which(rank(sounds) < 1000)]
+common.names <- fl_voters$name_last %in% top.sounds & fl_voters$name_first %in% top.sounds
+sum(common.names)
+
+typical <- subset(fl_voters, common.names)
+```
+Re-running knn...
+
+```{r, comment = ""}
+N = 10000
+train <- sample(nrow(typical), size = pTraining*N, replace = FALSE)
+test <- sample(1:nrow(typical)[-train], size = (N - length(train)), replace = FALSE)
+
+X <- cbind(as.factor(typical$name_last), as.factor(typical$name_middle), as.factor(typical$name_first))
+Xtrain <- X[train,]
+Xtest <- X[test,]
+
+race_obs <- typical$race[test]
+race_pred <- knn(Xtrain, Xtest, as.factor(typical$race[train]), k = 10)
+
+table(race_obs, race_pred)/length(test)
+mean(race_obs == race_pred)
+
+```
+Focusing in on typical names improves prediction. However, increasing the sample size far beyond N = 10,000 results in too many ties for decision. Does the length of each name provide leverage? Nothing noticeable; overall a more nuanced approach to the metaphones is warranted.
+
+```{r, comment = ""}
+N = 10000
+train <- sample(nrow(typical), size = pTraining*N, replace = FALSE)
+test <- sample(1:nrow(typical)[-train], size = (N - length(train)), replace = FALSE)
+
+X <- cbind(as.factor(typical$name_last), as.factor(typical$name_middle), as.factor(typical$name_first),
+           typical$last_length, typical$middle_length, typical$first_length)
+Xtrain <- X[train,]
+Xtest <- X[test,]
+
+race_obs <- typical$race[test]
+race_pred <- knn(Xtrain, Xtest, as.factor(typical$race[train]), k = 10)
+
+table(race_obs, race_pred)/length(test)
+mean(race_obs == race_pred)
+
+```
+
