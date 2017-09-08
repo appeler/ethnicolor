@@ -1,13 +1,13 @@
 # Florida Voter Registration Data as of 02-07-2017
-# https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/UBIG3F
+# data: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/UBIG3F
+# data cleaning: https://github.com/soodoku/ethnicolor/blob/master/data-raw/fl_voter_reg/fl_voter_reg.R
 
 # set directory
 setwd(basedir)
 setwd("data-raw/fl_voter_reg/")
 setwd("20170207_VoterDetail/")
 
-# Load library
-library(data.table)
+library(data.table) # very fast for reading from disk
 
 # Iterate over directory
 
@@ -40,8 +40,9 @@ remove(data)
 
 # for KNN
 standardize <- function(x, NAremove = TRUE){
-  (x - mean(x, na.rm = TRUE)/(sd(x, na.rm = TRUE)))
-  if(NAremove) x[is.na(x)] = 0
+  z <- (x - mean(x, na.rm = TRUE)/(sd(x, na.rm = TRUE)))
+  if(NAremove) z[is.na(x)] = 0
+  return(z)
 }
 
 fl_voters$last_length <- standardize(fl_voters$last_length)
@@ -53,12 +54,11 @@ fl_voters$first_length <- standardize(fl_voters$first_length)
 
 # recode race 
 fl_voters$race <- car::recode(fl_voters$race, "1 ='native_indian'; 2 = 'asian'; 3 = 'nh_black'; 4 ='hispanic'; 5 = 'nh_white' ; 6 = 'other'; 7 = 'multi_racial'; 9 = 'unknown'")
-# hose the rows where race is unknown or other 
-fl_voters <- subset(fl_voters, !(race %in% c("other", "unknown")))
+# remove infrequent categories 
+fl_voters <- subset(fl_voters, !(race %in% c("other", "unknown", "native_indian", "multi_racial", "asian")))
 # write out the file
 
-
-write.csv(fl_voters, file="fl_reg_name_race.csv", row.names=F) # 441 megabytes
+fwrite(fl_voters, file="fl_reg_name_race.csv", row.names=F) # 441 megabytes
 
 library(class)
 
