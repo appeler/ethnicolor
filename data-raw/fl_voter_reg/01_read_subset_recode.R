@@ -1,17 +1,17 @@
 # Florida Voter Registration Data as of 02-07-2017
 # data: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/UBIG3F
 
-# set directory
-setwd(basedir)
-setwd("data/fl_voter_reg/")
-setwd("20170207_VoterDetail/")
+# data.dir assuming working directory == project directory
+data.dir <- "data-raw/fl_voter_reg/20170207_VoterDetail"
+files <- dir(data.dir, pattern = ".txt", full.names = TRUE) # 67 data files
 
 # Load library
 library(data.table) # very fast for reading from disk
 library(phonics)
 
 # Iterate over directory, rbind the list
-fl_reg   <- do.call("rbind", lapply(dir(), function(x) fread(x, select = c(3:6, 21)))) # 5 * 13710358
+fl_reg   <- do.call("rbind", lapply(files, function(f) fread(f, select = c(3:6, 21)))) 
+# 13,710,358 x 5
 
 # meaningful col. names
 names(fl_reg) <- c("name_last", "name_suffix", "name_first", "name_middle", "race")
@@ -42,3 +42,21 @@ fl_reg$name_last_p <- soundex(fl_reg$name_last, maxCodeLen = 25L)
 
 # Concatenate Soundex coding
 fl_reg$name_p <- do.call(paste0, c(fl_reg[, c("name_first_p", "name_last_p")]))
+
+fl_reg$name_last_p[fl_reg$name_last_p == ""] <- "space"
+fl_reg$name_first_p[fl_reg$name_first_p == ""] <- "space"
+
+# ranking soundex. pooling first and last names ...
+
+# ranks <- rank(c(fl_reg$name_first_p, fl_reg$name_last_p)) # very slow
+counts <- table(c(fl_reg$name_first_p, fl_reg$name_last_p)) # instantaneous. length 48915
+ranks <- rank(counts)    # slow but tolerable
+ranks <- max(ranks) + 1 - ranks 
+# make most popular 1, third most popular 3, etc. 
+# easier to select top 1,000 if population criteria or data cleaning methods change slightly
+
+fl_reg$last_rank <- match(fl_reg$name_last_p, names(ranks))
+fl_reg$first_rank <- match(fl_reg$name_first_p, names(ranks))
+
+# fwrite(fl_reg, "data-raw/fl_voter_reg/fl_reg.csv") # 1.2 gigabytes
+# system("zip data-raw/fl_voter_reg/fl_reg.zip data-raw/fl_voter_reg/fl_reg.csv") # 411.5 MB
