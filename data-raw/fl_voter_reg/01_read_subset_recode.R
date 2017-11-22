@@ -16,7 +16,7 @@ fl_reg   <- do.call("rbind", lapply(files, function(f) fread(f, select = c(3:6, 
 # meaningful col. names
 names(fl_reg) <- c("name_last", "name_suffix", "name_first", "name_middle", "race")
 
-# recode race 
+# recode race
 fl_reg$race <- car::recode(fl_reg$race, "1 ='native_indian'; 2 = 'asian'; 3 = 'nh_black'; 4 ='hispanic'; 5 = 'nh_white' ; 6 = 'other'; 7 = 'multi_racial'; 9 = 'unknown'")
 
 # Subset to only NH White, NH Black, and Hispanic
@@ -25,9 +25,9 @@ fl_reg$race <- car::recode(fl_reg$race, "1 ='native_indian'; 2 = 'asian'; 3 = 'n
 fl_reg <- subset(fl_reg, race %in% c("nh_white", "nh_black", "hispanic", "asian"))
 
 # Length of first, last, and middle names
-fl_reg$last_length   <- nchar(fl_reg$last_length)
-fl_reg$middle_length <- nchar(fl_reg$middle_length)
-fl_reg$first_length  <- nchar(fl_reg$first_length)
+fl_reg$last_length   <- nchar(fl_reg$name_last)
+fl_reg$middle_length <- nchar(fl_reg$name_middle)
+fl_reg$first_length  <- nchar(fl_reg$name_first)
 
 # Dummy for suffix and middle name 
 fl_reg$suffix_dum <- ifelse(fl_reg$name_suffix=="", 0, 1)
