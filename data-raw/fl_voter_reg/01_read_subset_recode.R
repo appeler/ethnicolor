@@ -32,6 +32,7 @@ fl_reg$first_length  <- nchar(fl_reg$name_first)
 # Dummy for suffix and middle name 
 fl_reg$suffix_dum <- ifelse(fl_reg$name_suffix=="", 0, 1)
 fl_reg$middle_dum <- ifelse(fl_reg$name_middle=="", 0, 1)
+fl_reg$middle_dum <- ifelse(is.na(fl_reg$middle_dum), 0, fl_reg$middle_dum) # not needed for suffix
 
 # Let's concatenate the name. We use semi-colon to collapse to let diff. parts of the name be handled diff.
 fl_reg$name <- do.call(paste, c(fl_reg[, c("name_first", "name_middle", "name_last", "name_suffix")], sep=";"))
